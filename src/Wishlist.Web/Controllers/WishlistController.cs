@@ -55,6 +55,18 @@ namespace Wishlist.Web.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> Browse(string id)
+        {
+            var model = await _itemsService.Get(id);
+            model.ForEach(i => i.ImageUrl = Url.Content($"~/uploads/{i.ImageUrl}"));
+            return View(model);
+        }
+
+        public ActionResult Share()
+        {
+            ViewBag.Link = $"{Request.Url.GetLeftPart(UriPartial.Authority)}{Url.Content("~/")}wishlist/browse/{LoggedUserId}";
+            return View();
+        }
 
         [HttpPost]
         public async Task<JsonResult> Delete(int id)
