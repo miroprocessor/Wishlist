@@ -23,11 +23,12 @@ namespace Wishlist.Services
             }
         }
 
-        public async Task<Item> Get(int itemId)
+        public async Task<Item> Get(int itemId, string userId)
         {
             using (var dbContext = DataContext())
             {
-                return await dbContext.Items.SingleOrDefaultAsync(i => i.Id == itemId);
+                dbContext.Configuration.ProxyCreationEnabled = false;
+                return await dbContext.Items.SingleOrDefaultAsync(i => i.Id == itemId && i.UserId == userId);
             }
         }
 
@@ -44,6 +45,7 @@ namespace Wishlist.Services
         {
             using (var dbContext = DataContext())
             {
+                dbContext.Items.Attach(entity);
                 dbContext.SetModified(entity);
                 await dbContext.SaveChangesAsync();
             }

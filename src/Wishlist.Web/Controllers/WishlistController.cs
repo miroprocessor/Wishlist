@@ -47,9 +47,54 @@ namespace Wishlist.Web.Controllers
                     BuyUrl = model.BuyUrl,
                     ImageUrl = fileName,
                     Name = model.Name,
-                    UserId = LoggedUserId
+                    UserId = LoggedUserId,
+                    IsPurchased = model.IsPurchased
                 };
                 await _itemsService.Add(item);
+                return RedirectToAction("index");
+            }
+            return View(model);
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var item = await _itemsService.Get(id, LoggedUserId);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new ItemViewModel()
+            {
+                BuyUrl = item.BuyUrl,
+                IsPurchased = item.IsPurchased,
+                Name = item.Name
+            };
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int id, ItemViewModel model)
+        {
+            var item = await _itemsService.Get(id, LoggedUserId);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
+                {
+                    var fileName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(model.ImageFile.FileName)}";
+                    model.ImageFile.SaveAs(Server.MapPath($"~/uploads/{fileName}"));
+                    item.ImageUrl = fileName;
+                }
+
+                item.BuyUrl = model.BuyUrl;
+                item.Name = model.Name;
+                item.UserId = LoggedUserId;
+                item.IsPurchased = model.IsPurchased;
+
+                await _itemsService.Edit(item);
                 return RedirectToAction("index");
             }
             return View(model);

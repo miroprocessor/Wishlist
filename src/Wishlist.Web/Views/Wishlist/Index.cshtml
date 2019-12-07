@@ -9,7 +9,7 @@
 
 <p>
     @Html.ActionLink("Add Item", "Create")
-    @Html.ActionLink("Share My List", "Share",null,new { style="margin-left:20px"})
+    @Html.ActionLink("Share My List", "Share", null, new { style = "margin-left:20px" })
 </p>
 <table class="table">
     <tr>
@@ -24,6 +24,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsPurchased)
         </th>
         <th></th>
     </tr>
@@ -47,8 +50,10 @@
                 @item.CreatedOn.Format(true)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                @Html.DisplayFor(modelItem => item.IsPurchased)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
                 <button type="button" onclick="_delete(@item.Id)" class="btn btn-danger">Delete</button>
             </td>
         </tr>

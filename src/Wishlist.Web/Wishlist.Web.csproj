@@ -251,6 +251,7 @@
     <Content Include="Views\Wishlist\Index.cshtml" />
     <Content Include="Views\Wishlist\Browse.cshtml" />
     <Content Include="Views\Wishlist\Share.cshtml" />
+    <Content Include="Views\Wishlist\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

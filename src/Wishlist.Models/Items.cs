@@ -24,5 +24,9 @@ namespace Wishlist.Models
         [Required]
         public string UserId { get; set; }
 
+        [Required]
+        [Display(Name = "Is Purchased?")]
+        public bool IsPurchased { get; set; }
+
     }
 }

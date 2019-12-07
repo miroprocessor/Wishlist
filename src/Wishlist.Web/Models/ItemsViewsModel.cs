@@ -15,5 +15,8 @@ namespace Wishlist.Web.Models
 
         [Display(Name ="Buy Here")]
         public string BuyUrl { get; set; }
+
+        [Display(Name="Is Purchased?")]
+        public bool IsPurchased { get; set; }
     }
 }
