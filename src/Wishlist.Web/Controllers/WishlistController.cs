@@ -54,5 +54,21 @@ namespace Wishlist.Web.Controllers
             }
             return View(model);
         }
+
+
+        [HttpPost]
+        public async Task<JsonResult> Delete(int id)
+        {
+            try
+            {
+                var item = new Item() { Id = id };
+                await _itemsService.Delete(item);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

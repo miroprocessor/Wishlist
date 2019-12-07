@@ -27,29 +27,51 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            <img src="@item.ImageUrl" style="width:100px;height:auto" />
-        </td>
-        <td>
-            @if (!string.IsNullOrEmpty(item.BuyUrl))
-            {
-                <a href="@item.BuyUrl" target="_blank">Buy From</a>
-            }
-        </td>
-        <td>
-            @item.CreatedOn.Format(true)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr id="tr_@item.Id">
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <img src="@item.ImageUrl" style="width:100px;height:auto" />
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.BuyUrl))
+                {
+                    <a href="@item.BuyUrl" target="_blank">Buy From</a>
+                }
+            </td>
+            <td>
+                @item.CreatedOn.Format(true)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                <button type="button" onclick="_delete(@item.Id)" class="btn btn-danger">Delete</button>
+            </td>
+        </tr>
+    }
 
 </table>
+@section scripts{
+    <script>
+        function _delete(id)
+        {
+            if (confirm('you will deletean item, are you sure')) {
+                $.ajax({
+                    url:'@Url.Content("~/wishlist/delete/")' + id,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function () {
+                        $('#tr_' + id).hide();
+                    },
+                    error:function(e)
+                    {
+                        alert('Error');
+                    }
+                })
+            }
+        }
+    </script>
+}
