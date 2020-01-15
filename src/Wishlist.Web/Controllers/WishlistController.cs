@@ -99,7 +99,7 @@ namespace Wishlist.Web.Controllers
             }
             return View(model);
         }
-
+        [AllowAnonymous]
         public async Task<ActionResult> Browse(string id)
         {
             var model = await _itemsService.Get(id);
